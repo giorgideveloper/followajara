@@ -1,0 +1,9 @@
+.li::marker {
+    content: '✓ ';
+    color: green !important;
+    font-size: 20px;
+}
+
+.cust::marker{
+    content: '.';
+}

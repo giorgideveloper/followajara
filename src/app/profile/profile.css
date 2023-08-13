@@ -1,0 +1,10 @@
+.react-tabs__tab-list{
+    border-bottom: 0 !important;
+}
+
+.tab:visited{
+    border-color: transparent;
+}
+.tab:active{
+    border-color: transparent;
+}
