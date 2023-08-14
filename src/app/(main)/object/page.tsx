@@ -69,6 +69,7 @@ const Page: React.FC = () => {
 		fetchInfo();
 	}, []);
 
+	const userId = localStorage.getItem('userId');
 	return (
 		<>
 			<div className='container mx-auto my-4 px-7 '>
@@ -81,22 +82,28 @@ const Page: React.FC = () => {
 							>
 								{item.description}
 							</h2>
-							<Link
-								className='bg-white hover:bg-gray-100 text-gray-800 font-semibold py-3 px-4  border border-gray-400 rounded shadow '
-								href={{
-									pathname: '/objregister',
-								}}
-							>
-								შესვლა
-							</Link>
-							<Link
-								className='bg-white hover:bg-gray-100 text-gray-800 font-semibold py-3 px-4 border border-gray-400 rounded shadow '
-								href={{
-									pathname: '/objregister',
-								}}
-							>
-								რეგისტრაცია
-							</Link>
+							{userId ? (
+								''
+							) : (
+								<div className='id'>
+									<Link
+										className='bg-white hover:bg-gray-100 text-gray-800 font-semibold py-3 px-4  border border-gray-400 rounded shadow '
+										href={{
+											pathname: '/objregister',
+										}}
+									>
+										შესვლა
+									</Link>
+									<Link
+										className='bg-white hover:bg-gray-100 text-gray-800 font-semibold py-3 px-4 border border-gray-400 rounded shadow '
+										href={{
+											pathname: '/objregister',
+										}}
+									>
+										რეგისტრაცია
+									</Link>
+								</div>
+							)}
 						</div>
 					</>
 				))}
@@ -117,7 +124,7 @@ const Page: React.FC = () => {
 											<div className='bottom-left absolute'>განთავსება</div>
 											<Image
 												className='w-full'
-												src={anbani}
+												src={data.image}
 												alt={item.object_name}
 											/>
 										</div>

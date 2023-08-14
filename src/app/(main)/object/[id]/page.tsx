@@ -101,7 +101,7 @@ export default function Page({ params }: { params: { id: string } }) {
 											<div className='bottom-left absolute'>განთავსება</div>
 											<Image
 												className='w-full'
-												src={anbani}
+												src={post.image1}
 												alt={post.object_name}
 											/>
 										</div>

@@ -2,8 +2,9 @@
 import axios from 'axios';
 import { useForm } from 'react-hook-form';
 import moment from 'moment';
-import { string } from 'yup';
+import { useRouter } from 'next/navigation';
 import { useState, ChangeEvent } from 'react';
+
 type FormValue = {
 	object_name: string;
 	object_type_value: number;
@@ -21,7 +22,9 @@ type FormValue = {
 	email: string;
 	password: string;
 };
+
 const ObjRegisterForm = () => {
+	const router = useRouter();
 	const form = useForm<FormValue>();
 	const { register, control, handleSubmit } = form;
 
@@ -92,6 +95,9 @@ const ObjRegisterForm = () => {
 						},
 					}
 				);
+				setTimeout(() => {
+					router.replace('/profile');
+				}, 100);
 
 				console.log('Registration successful');
 			} catch (error) {
@@ -176,7 +182,7 @@ const ObjRegisterForm = () => {
 					მობილური
 				</label>
 				<input
-					type='text'
+					type='tel'
 					id='mobile'
 					className='w-full input input-bordered mt-2 text-md text-gray-500'
 					{...register('mobile')}

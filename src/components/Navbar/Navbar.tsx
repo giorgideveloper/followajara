@@ -66,6 +66,7 @@ const Navbar = ({ metadata }: any) => {
 		});
 	}, []);
 
+	const userId = localStorage.getItem('userId');
 	return (
 		<div className={`navbar px-5 md:px-20 bg-base-100 shadow-sm font-fira-go`}>
 			<div className='navbar-start'>
@@ -173,7 +174,13 @@ const Navbar = ({ metadata }: any) => {
 					</>
 				) : (
 					<Link href='/login' className='font-fira-go text-gray-600'>
-						შესვლა
+						{userId ? (
+							<Link href='/dashboard' className='font-fira-go text-gray-600'>
+								გამარჯობა გიორგი
+							</Link>
+						) : (
+							'შესვლა'
+						)}
 					</Link>
 				)}
 			</div>

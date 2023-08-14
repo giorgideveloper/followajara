@@ -22,6 +22,7 @@
     "eslint": "8.44.0",
     "eslint-config-next": "13.4.12",
     "flatpickr": "^4.6.13",
+    "jsonwebtoken": "^9.0.1",
     "moment": "^2.29.4",
     "next": "13.4.12",
     "nodemailer": "^6.9.4",
@@ -40,6 +41,7 @@
   },
   "devDependencies": {
     "@tailwindcss/typography": "^0.5.9",
+    "@types/jsonwebtoken": "^9.0.2",
     "@types/slick-carousel": "^1.6.37",
     "daisyui": "^3.5.0",
     "encoding": "^0.1.13",
