@@ -89,7 +89,7 @@ export default function Page({ params }: { params: { id: string } }) {
 								<div className={`card-body ${Banner_caps.className}`}>
 									<div className='avatar'>
 										<div className='w-full h-80 post-card rounded-t-lg border-b-4 border-[#D98200] relative'>
-											<div className='top-left absolute  '>
+											<div className='top-left-main absolute  '>
 												<div className='top-left-bg'>
 													<span>
 														{(post.discount === 100 && <span>Free</span>) || (
@@ -98,11 +98,17 @@ export default function Page({ params }: { params: { id: string } }) {
 													</span>
 												</div>
 											</div>
-											<div className='bottom-left absolute'>განთავსება</div>
+
 											<Image
 												className='w-full'
-												src={post.image1}
-												alt={post.object_name}
+												src={
+													post.image1 === undefined || post.image1 === null
+														? 'https://follow.geoevents.ge/media/media/obieqtebi/318123540_140831465410945_5078453068844189760_n.jpg'
+														: `${post.image1}`
+												}
+												alt='anbani'
+												width={500}
+												height={500}
 											/>
 										</div>
 									</div>

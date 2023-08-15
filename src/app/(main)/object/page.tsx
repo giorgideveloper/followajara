@@ -28,13 +28,12 @@ const API_URL_INFO = 'https://follow.geoevents.ge/api/info/';
 interface Item {
 	id: number;
 	object_name: string;
-	last_name: string;
+	object_type: null;
 	address: string;
 	id_number: string;
-	email: string;
-	mobile: string;
-	facebook: string;
-	instagram: string;
+	time_from: string;
+	time_to: string;
+	discount: null;
 	description: string;
 	image1: string;
 }
@@ -89,7 +88,7 @@ const Page: React.FC = () => {
 									<Link
 										className='bg-white hover:bg-gray-100 text-gray-800 font-semibold py-3 px-4  border border-gray-400 rounded shadow '
 										href={{
-											pathname: '/objregister',
+											pathname: '/objlogin',
 										}}
 									>
 										შესვლა
@@ -118,14 +117,24 @@ const Page: React.FC = () => {
 										<div className='w-full h-80 rounded-t-lg border-b-4 border-[#D98200] relative'>
 											<div className='top-left absolute  '>
 												<div className='top-left-bg'>
-													<span>Free</span>
+													<span>
+														{(item.discount === 100 && <span>Free</span>) || (
+															<span>{item.discount} %</span>
+														)}
+													</span>
 												</div>
 											</div>
 											<div className='bottom-left absolute'>განთავსება</div>
 											<Image
 												className='w-full'
-												src={data.image}
-												alt={item.object_name}
+												src={
+													item.image1 === undefined || item.image1 === null
+														? 'https://follow.geoevents.ge/media/media/obieqtebi/318123540_140831465410945_5078453068844189760_n.jpg'
+														: `${item.image1}`
+												}
+												alt='anbani'
+												width={500}
+												height={500}
 											/>
 										</div>
 									</div>
@@ -146,7 +155,10 @@ const Page: React.FC = () => {
 												<li className='li'>
 													<Image className='w-5 ' src={clock} alt='' />
 
-													<span className='pl-2'>10:00-00:00</span>
+													<span className='pl-2'>{`${item.time_from.slice(
+														0,
+														5
+													)}-${item.time_to.slice(0, 5)}`}</span>
 												</li>
 											</ul>
 										</div>

@@ -282,6 +282,18 @@ body {
 	color: #d98200 !important;
 }
 
+.top-left-main {
+	transform: rotate(317deg);
+	width: 129px;
+	height: 25px;
+	background: white;
+	text-align: center;
+	margin-left: -1em;
+	left: -9px;
+	top: 22px;
+	font-size: 1.3em;
+}
+
 .bottom-left {
 	bottom: 8px;
 	left: 16px;
@@ -317,4 +329,10 @@ body {
 .li-post img {
 	width: 25px;
 	height: 25px;
+}
+
+.portfolio {
+	width: 300px;
+	height: 100vh;
+	background-color: #1d293e;
 }
