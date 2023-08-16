@@ -70,19 +70,22 @@ export const postEditUserData = async (
 	userData: RegistrationType
 ): Promise<RegistrationResponse> => {
 	try {
+		const accessToken = localStorage.getItem('access_token');
+		const userId = localStorage.getItem('userId');
 		const response = await axios.put<RegistrationResponse>(
 			`${baseURL}/user/update`,
 			userData,
 			{
 				headers: {
 					'Content-Type': 'multipart/form-data',
+					Authorization: `Bearer ${accessToken}`,
 				},
 			}
 		);
 
 		return response.data;
 	} catch (error) {
-		throw error;
+		console.log(error);
 	}
 };
 

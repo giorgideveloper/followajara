@@ -1,40 +1,17 @@
 'use client';
 import { useForm } from 'react-hook-form';
-import moment from 'moment';
 import { useRouter } from 'next/navigation';
+import moment from 'moment';
 import { useEffect, useState } from 'react';
 import { RegistrationType } from '@/app/(main)/api/api.types';
 import {
 	dashboardApi,
+	objectApi,
 	postEditUserData,
 	postUserData,
 } from '@/app/(main)/api/api';
 
-const EditObjc = () => {
-	interface Item {
-		id: number;
-		object_name: string;
-		object_type: any;
-		name: string;
-		last_name: string;
-		address: string;
-		id_number: string;
-		email: string;
-		mobile: string;
-		time_from: null;
-		time_to: null;
-		discount: null;
-		facebook: string;
-		instagram: string;
-		description: string;
-		image1: null;
-	}
-
-	const router = useRouter();
-	const [data, setData] = useState<RegistrationType[]>([]);
-	const { register, control, handleSubmit, setValue } =
-		useForm<RegistrationType>();
-
+const EditObjc = ({ data }) => {
 	const defaultValues: any = {
 		object_name: data.object_name,
 		object_type_value: data.object_type,
@@ -52,115 +29,56 @@ const EditObjc = () => {
 		description: data.description,
 		image1: data.image1,
 	};
-	useEffect(() => {
-		setValue('object_name', defaultValues.object_name);
-		setValue('object_type_value', defaultValues.object_type);
-		setValue('name', defaultValues.name);
-		setValue('last_name', defaultValues.last_name);
-		setValue('address', defaultValues.address);
-		setValue('id_number', defaultValues.id_number);
-		setValue('email', defaultValues.email);
-		setValue('mobile', defaultValues.mobile);
-		setValue('time_from_type', defaultValues.time_from);
-		setValue('time_to_type', defaultValues.time_to);
-		setValue('numberDiscount', defaultValues.discount);
-		setValue('facebook', defaultValues.facebook);
-		setValue('instagram', defaultValues.instagram);
-		setValue('description', defaultValues.description);
-		setValue('image1', defaultValues.image1);
-	}, [setValue, defaultValues]);
+	// image1: null as File | string, // TODO : ปรับ type เป็น file
+	const [editData, setEditData] = useState<any>({
+		name: '',
+		last_name: '',
+		mobile: '',
+		email: '',
+		object_name: '',
+		object_type_value: '',
+		address: '',
+		numberDiscount: '',
+		time_from_type: '',
+		time_to_type: '',
+		description: '',
+		facebook: '',
+		instagram: '',
+		image1: '',
+		id_number: '',
+	});
+	const router = useRouter();
+	const [editStatus, setEditStatus] = useState('');
+	console.log('🚀 ~ file: EditObjc.tsx:34 ~ EditObjc ~ editData:', editData);
 
-	const [image, setImage] = useState('');
-
-	const [registrationStatus, setRegistrationStatus] = useState('');
-
-	// Image FC
-	const handleImageChange = (event: any) => {
-		setImage(event.target.files[0]);
-		console.log(
-			'🚀 ~ file: ObjRegisterForm.tsx:35 ~ handleImageChange ~ imageFile:',
-			event.target.files[0]
-		);
+	const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+		const { name, value } = e.target;
+		setEditData(prevData => ({
+			...prevData,
+			[name]: value,
+		}));
 	};
 
 	useEffect(() => {
-		const getObject = async () => {
-			try {
-				const response = await dashboardApi();
-				setData(response);
-			} catch (e) {
-				console.log(e);
-			}
-		};
-		getObject();
+		setEditData(data);
 	}, []);
 
-	const onSubmit = async (data: RegistrationType) => {
-		const {
-			object_name,
-			object_type_value,
-			name,
-			last_name,
-			address,
-			id_number,
-			mobile,
-			time_from_type,
-			time_to_type,
-			numberDiscount,
-			description,
-			email,
-			password,
-			facebook,
-			instagram,
-		} = data;
-
-		let object_type: number = +object_type_value;
-		let discount: number = +numberDiscount;
-		let time_from = moment(time_from_type, 'hh:mm:ss').format('hh:mm');
-		let time_to = moment(time_to_type, 'hh:mm:ss').format('hh:mm');
-
-		const formData: any = new FormData();
-
-		formData.append('image', image);
-		// Append other fields to the formData
-		formData.append('object_name', object_name);
-		formData.append('object_type', object_type.toString());
-		formData.append('name', name);
-		formData.append('facebook', facebook);
-		formData.append('instagram', instagram);
-		formData.append('last_name', last_name);
-		formData.append('address', address);
-		formData.append('id_number', id_number);
-		formData.append('mobile', mobile);
-		formData.append('time_from', time_from);
-		formData.append('time_to', time_to);
-		formData.append('discount', discount.toString());
-		formData.append('email', email);
-		formData.append('password', password);
-		formData.append('description', description);
-
+	const handleSubmit = async () => {
 		try {
-			const response = await postEditUserData(formData);
-			console.log(formData);
-			setRegistrationStatus(response.message);
-
+			const response = await postEditUserData(editData);
+			setEditStatus(response.message);
 			setTimeout(() => {
 				router.replace('/profile');
 			}, 100);
-
-			console.log('Registration successful');
 		} catch (error) {
-			console.error('Error registering user:', error);
-			setRegistrationStatus('Error during registration');
+			console.error('Error editing user:', error);
+			setEditStatus('Error editing user');
 		}
 	};
 
 	return (
 		<>
-			<form
-				className=' w-full space-y-4 my-4'
-				onSubmit={handleSubmit(onSubmit)}
-			>
+			<form className=' w-full space-y-4 my-4'>
 				<h3 className='flex'>
 					<svg
 						xmlns='http://www.w3.org/2000/svg'
@@ -190,8 +108,11 @@ const EditObjc = () => {
 						<input
 							type='text'
 							id='name'
+							name='name'
 							className='w-full input input-bordered mt-2 text-md text-gray-500'
-							{...register('name')}
+							// onChange={handleInputChange}
+							value={editData.name}
+							onChange={handleInputChange}
 						/>
 					</div>
 					<div className='w-full'>
@@ -202,10 +123,13 @@ const EditObjc = () => {
 							გვარი
 						</label>
 						<input
+							name='last_name'
+							value={editData.last_name}
+							onChange={handleInputChange}
 							type='text'
 							id='last_name'
 							className='w-full input input-bordered mt-2 text-md text-gray-500'
-							{...register('last_name')}
+							// {...register('last_name')}
 						/>
 					</div>
 				</div>
@@ -218,10 +142,12 @@ const EditObjc = () => {
 							მობილური
 						</label>
 						<input
+							value={editData.mobile}
+							onChange={handleInputChange}
 							type='tel'
 							id='mobile'
 							className='w-full input input-bordered mt-2 text-md text-gray-500'
-							{...register('mobile')}
+							// {...register('mobile')}
 						/>
 					</div>
 					<div className='w-full'>
@@ -232,10 +158,12 @@ const EditObjc = () => {
 							მეილი
 						</label>
 						<input
+							value={editData.email}
+							onChange={handleInputChange}
 							type='text'
 							id='email'
 							className='w-full input input-bordered mt-2 text-md text-gray-500'
-							{...register('email')}
+							// {...register('email')}
 						/>
 					</div>
 				</div>
@@ -265,10 +193,13 @@ const EditObjc = () => {
 							ობიექტის სახელი
 						</label>
 						<input
+							value={editData.object_name}
+							onChange={handleInputChange}
 							type='text'
 							id='object_name'
+							name='object_name'
 							className='w-full input input-bordered mt-2 text-md text-gray-500'
-							{...register('object_name')}
+							// {...register('object_name')}
 						/>
 					</div>
 
@@ -280,10 +211,12 @@ const EditObjc = () => {
 							ობიექტის ტაიპი
 						</label>
 						<input
+							value={editData.object_type_value}
+							onChange={handleInputChange}
 							type='number'
 							id='object_type_value'
 							className='w-full input input-bordered mt-2 text-md text-gray-500'
-							{...register('object_type_value', { min: 1, max: 3 })}
+							// {...register('object_type_value', { min: 1, max: 3 })}
 						/>
 					</div>
 				</div>
@@ -296,10 +229,12 @@ const EditObjc = () => {
 							მისამართი
 						</label>
 						<input
+							value={editData.address}
+							onChange={handleInputChange}
 							type='text'
 							id='address'
 							className='w-full input input-bordered mt-2 text-md text-gray-500'
-							{...register('address')}
+							// {...register('address')}
 						/>
 					</div>
 					<div className='w-full'>
@@ -310,10 +245,12 @@ const EditObjc = () => {
 							ფასდაკლება
 						</label>
 						<input
+							value={editData.number}
+							onChange={handleInputChange}
 							type='number'
 							id='numberDiscount'
 							className='w-full input input-bordered mt-2 text-md text-gray-500'
-							{...register('numberDiscount')}
+							// {...register('numberDiscount')}
 						/>
 					</div>
 				</div>
@@ -326,10 +263,12 @@ const EditObjc = () => {
 							დაწყება
 						</label>
 						<input
+							value={editData.time_from_type}
+							onChange={handleInputChange}
 							type='time'
 							id='time_from_type'
 							className='w-full input input-bordered mt-2 text-md text-gray-500'
-							{...register('time_from_type')}
+							// {...register('time_from_type')}
 						/>
 					</div>
 					<div className='w-full'>
@@ -340,10 +279,12 @@ const EditObjc = () => {
 							დასრულება
 						</label>
 						<input
+							value={editData.time_to}
+							onChange={handleInputChange}
 							type='time'
 							id='time_to'
 							className='w-full input input-bordered mt-2 text-md text-gray-500'
-							{...register('time_to_type')}
+							// {...register('time_to_type')}
 						/>
 					</div>
 				</div>
@@ -355,10 +296,12 @@ const EditObjc = () => {
 						description
 					</label>
 					<input
+						value={editData.description}
+						onChange={handleInputChange}
 						type='text'
 						id='description'
 						className='w-full input input-bordered mt-2 h-28 text-md text-gray-500'
-						{...register('description')}
+						// {...register('description')}
 					/>
 				</div>
 
@@ -388,10 +331,12 @@ const EditObjc = () => {
 							facebook
 						</label>
 						<input
+							value={editData.facebook}
+							onChange={handleInputChange}
 							type='text'
 							id='facebook'
 							className='w-full input input-bordered mt-2 text-md text-gray-500'
-							{...register('facebook')}
+							// {...register('facebook')}
 						/>
 					</div>
 					<div className='w-full'>
@@ -403,10 +348,12 @@ const EditObjc = () => {
 							instagram
 						</label>
 						<input
+							value={editData.instagram}
+							onChange={handleInputChange}
 							type='text'
 							id='instagram'
 							className='w-full input input-bordered mt-2 text-md text-gray-500'
-							{...register('instagram')}
+							// {...register('instagram')}
 						/>
 					</div>
 				</div>
@@ -415,10 +362,12 @@ const EditObjc = () => {
 					ფოტო
 				</label>
 				<input
+					value={editData.image1}
+					onChange={handleInputChange}
 					type='file'
 					id='image1'
 					accept='image/*'
-					onChange={handleImageChange}
+					// onChange={handleImageChange}
 					className='w-full input input-bordered mt-2 text-md text-gray-500'
 				/>
 
@@ -429,12 +378,16 @@ const EditObjc = () => {
 					id_number
 				</label>
 				<input
+					value={editData.id_number}
+					onChange={handleInputChange}
 					type='text'
 					id='id_number'
 					className='w-full input input-bordered mt-2 text-md text-gray-500'
-					{...register('id_number')}
+					// {...register('id_number')}
 				/>
-				<button className='btn btn-block btn-primary'>Submit</button>
+				<button className='btn btn-block btn-primary' onClick={handleSubmit}>
+					Submit
+				</button>
 			</form>
 		</>
 	);
