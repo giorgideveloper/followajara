@@ -336,3 +336,23 @@ body {
 	height: 100vh;
 	background-color: #1d293e;
 }
+
+.detail ul li span {
+	color: #aeb7c2;
+	padding: 12px 50px;
+	display: block;
+	text-decoration: none;
+	font-size: 16px;
+	font-weight: 500;
+}
+
+.detail ul li :hover {
+	background: #172133;
+}
+.detail ul li a {
+	-webkit-transition: all 0.3s ease;
+	transition: all 0.3s ease;
+}
+.log-out {
+	margin-top: 26em;
+}

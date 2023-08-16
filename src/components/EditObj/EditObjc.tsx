@@ -1,19 +1,79 @@
 'use client';
-import axios from 'axios';
 import { useForm } from 'react-hook-form';
 import moment from 'moment';
 import { useRouter } from 'next/navigation';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { RegistrationType } from '@/app/(main)/api/api.types';
-import { postUserData } from '@/app/(main)/api/api';
+import {
+	dashboardApi,
+	postEditUserData,
+	postUserData,
+} from '@/app/(main)/api/api';
 
-const ObjRegisterForm = () => {
+const EditObjc = () => {
+	interface Item {
+		id: number;
+		object_name: string;
+		object_type: any;
+		name: string;
+		last_name: string;
+		address: string;
+		id_number: string;
+		email: string;
+		mobile: string;
+		time_from: null;
+		time_to: null;
+		discount: null;
+		facebook: string;
+		instagram: string;
+		description: string;
+		image1: null;
+	}
+
 	const router = useRouter();
-	const form = useForm<RegistrationType>();
-	const { register, control, handleSubmit } = form;
+	const [data, setData] = useState<RegistrationType[]>([]);
+	const { register, control, handleSubmit, setValue } =
+		useForm<RegistrationType>();
+
+	const defaultValues: any = {
+		object_name: data.object_name,
+		object_type_value: data.object_type,
+		name: data.name,
+		last_name: data.last_name,
+		address: data.address,
+		id_number: data.id_number,
+		email: data.email,
+		mobile: data.mobile,
+		time_from_type: data.time_from,
+		time_to_type: data.time_to,
+		numberDiscount: data.discount,
+		facebook: data.facebook,
+		instagram: data.instagram,
+		description: data.description,
+		image1: data.image1,
+	};
+	useEffect(() => {
+		setValue('object_name', defaultValues.object_name);
+		setValue('object_type_value', defaultValues.object_type);
+		setValue('name', defaultValues.name);
+		setValue('last_name', defaultValues.last_name);
+		setValue('address', defaultValues.address);
+		setValue('id_number', defaultValues.id_number);
+		setValue('email', defaultValues.email);
+		setValue('mobile', defaultValues.mobile);
+		setValue('time_from_type', defaultValues.time_from);
+		setValue('time_to_type', defaultValues.time_to);
+		setValue('numberDiscount', defaultValues.discount);
+		setValue('facebook', defaultValues.facebook);
+		setValue('instagram', defaultValues.instagram);
+		setValue('description', defaultValues.description);
+		setValue('image1', defaultValues.image1);
+	}, [setValue, defaultValues]);
+
 	const [image, setImage] = useState('');
 
 	const [registrationStatus, setRegistrationStatus] = useState('');
+
 	// Image FC
 	const handleImageChange = (event: any) => {
 		setImage(event.target.files[0]);
@@ -22,6 +82,18 @@ const ObjRegisterForm = () => {
 			event.target.files[0]
 		);
 	};
+
+	useEffect(() => {
+		const getObject = async () => {
+			try {
+				const response = await dashboardApi();
+				setData(response);
+			} catch (e) {
+				console.log(e);
+			}
+		};
+		getObject();
+	}, []);
 
 	const onSubmit = async (data: RegistrationType) => {
 		const {
@@ -47,50 +119,42 @@ const ObjRegisterForm = () => {
 		let time_from = moment(time_from_type, 'hh:mm:ss').format('hh:mm');
 		let time_to = moment(time_to_type, 'hh:mm:ss').format('hh:mm');
 
-		if (image) {
-			const formData: any = new FormData();
+		const formData: any = new FormData();
 
-			formData.append('image', image);
+		formData.append('image', image);
+		// Append other fields to the formData
+		formData.append('object_name', object_name);
+		formData.append('object_type', object_type.toString());
+		formData.append('name', name);
+		formData.append('facebook', facebook);
+		formData.append('instagram', instagram);
+		formData.append('last_name', last_name);
+		formData.append('address', address);
+		formData.append('id_number', id_number);
+		formData.append('mobile', mobile);
+		formData.append('time_from', time_from);
+		formData.append('time_to', time_to);
+		formData.append('discount', discount.toString());
+		formData.append('email', email);
+		formData.append('password', password);
+		formData.append('description', description);
 
-			// Append other fields to the formData
-			formData.append('object_name', object_name);
-			formData.append('object_type', object_type.toString());
-			formData.append('name', name);
-			formData.append('facebook', facebook);
-			formData.append('instagram', instagram);
+		try {
+			const response = await postEditUserData(formData);
+			console.log(formData);
+			setRegistrationStatus(response.message);
 
-			formData.append('last_name', last_name);
-			formData.append('address', address);
-			formData.append('id_number', id_number);
-			formData.append('mobile', mobile);
-			formData.append('time_from', time_from);
-			formData.append('time_to', time_to);
-			formData.append('discount', discount.toString());
-			formData.append('email', email);
-			formData.append('password', password);
-			formData.append('description', description);
+			setTimeout(() => {
+				router.replace('/profile');
+			}, 100);
 
-			try {
-			} catch (error) {}
-
-			try {
-				const response = await postUserData(formData);
-				setRegistrationStatus(response.message);
-
-				setTimeout(() => {
-					router.replace('/profile');
-				}, 100);
-
-				console.log('Registration successful');
-			} catch (error) {
-				console.error('Error registering user:', error);
-				setRegistrationStatus('Error during registration');
-			}
-		} else {
-			console.log('Please select an image');
+			console.log('Registration successful');
+		} catch (error) {
+			console.error('Error registering user:', error);
+			setRegistrationStatus('Error during registration');
 		}
 	};
-	console.log(registrationStatus);
+
 	return (
 		<>
 			<form
@@ -198,7 +262,7 @@ const ObjRegisterForm = () => {
 							htmlFor='object_name'
 							className={'text-lg font-medium text-gray-900'}
 						>
-							ოპიექტის სახელი
+							ობიექტის სახელი
 						</label>
 						<input
 							type='text'
@@ -297,36 +361,7 @@ const ObjRegisterForm = () => {
 						{...register('description')}
 					/>
 				</div>
-				<div className='flex flex-col md:flex-row gap-4'>
-					<div className='w-full'>
-						<label
-							htmlFor='password'
-							className={'text-lg font-medium text-gray-900'}
-						>
-							პაროლი
-						</label>
-						<input
-							type='password'
-							id='password'
-							className='w-full input input-bordered mt-2 text-md text-gray-500'
-							{...register('password')}
-						/>
-					</div>
-					<div className='w-full'>
-						<label
-							htmlFor='password'
-							className={'text-lg font-medium text-gray-900'}
-						>
-							გაინმეორეთ პაროლი
-						</label>
-						<input
-							type='password'
-							id='password'
-							className='w-full input input-bordered mt-2 text-md text-gray-500'
-							{...register('password')}
-						/>
-					</div>
-				</div>
+
 				<h3 className='flex'>
 					<svg
 						xmlns='http://www.w3.org/2000/svg'
@@ -404,4 +439,4 @@ const ObjRegisterForm = () => {
 		</>
 	);
 };
-export default ObjRegisterForm;
+export default EditObjc;

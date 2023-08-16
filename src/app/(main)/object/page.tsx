@@ -10,6 +10,8 @@ import axios from 'axios';
 import { useEffect, useState } from 'react';
 import Link from 'next/link';
 import { Metadata } from 'next';
+import { ObjectType } from '../api/api.types';
+import { infoText, objectApi } from '../api/api';
 
 export const metadata: Metadata = {
 	title: 'რეგისტრაცია',
@@ -22,27 +24,13 @@ const Banner_caps = localFont({
 	display: 'swap',
 	variable: '--BPG-ExtraSquare-Mtavruli',
 });
-const API_URL = 'https://follow.geoevents.ge/api/object/'; // object API
-const API_URL_INFO = 'https://follow.geoevents.ge/api/info/';
 
-interface Item {
-	id: number;
-	object_name: string;
-	object_type: null;
-	address: string;
-	id_number: string;
-	time_from: string;
-	time_to: string;
-	discount: null;
-	description: string;
-	image1: string;
-}
 interface InfoType {
 	id: number;
 	description: string;
 }
 const Page: React.FC = () => {
-	const [data, setData] = useState<Item[]>([]);
+	const [data, setData] = useState<ObjectType[]>([]);
 	const [info, setInfo] = useState<InfoType[]>([]);
 
 	console.log('🚀 ~ file: page.tsx:44 ~ Page ~ data:', data);
@@ -50,16 +38,16 @@ const Page: React.FC = () => {
 	useEffect(() => {
 		const fetchData = async () => {
 			try {
-				const response = await axios.get(`${API_URL}`);
-				setData(response.data.results);
-			} catch (error) {
-				console.log('🚀 ~ file: page.tsx:54 ~ fetchData ~ error:', error);
+				const response: any = await objectApi();
+				setData(response);
+			} catch (e) {
+				console.log(e);
 			}
 		};
 		const fetchInfo = async () => {
 			try {
-				const response = await axios.get(`${API_URL_INFO}`);
-				setInfo(response.data.results);
+				const response = await infoText();
+				setInfo(response);
 			} catch (error) {
 				console.log('🚀 ~ file: page.tsx:54 ~ fetchData ~ error:', error);
 			}

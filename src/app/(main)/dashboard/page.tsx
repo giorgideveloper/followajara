@@ -4,12 +4,11 @@ import location from '../object/icon/location.svg';
 import clock from '../object/icon/clock.svg';
 import { useState, useEffect } from 'react';
 import { refreshAccessToken } from '@/components/Auth/utils/api';
-import axios from 'axios';
 import Link from 'next/link';
 import Image from 'next/image';
 import { useRouter } from 'next/navigation';
-
-const API_BASE_URL = 'https://follow.geoevents.ge/api/object/'; // object API
+import { dashboardApi } from '../api/api';
+import { Banner_caps } from '../object/fonts/fonts';
 
 const Page = () => {
 	const router = useRouter();
@@ -37,19 +36,8 @@ const Page = () => {
 	useEffect(() => {
 		async function fetchUserData() {
 			try {
-				const accessToken = localStorage.getItem('access_token');
-				const userId = localStorage.getItem('userId');
-				if (!accessToken) {
-					throw new Error('Access token not found');
-				}
-
-				const response = await axios.get(`${API_BASE_URL}${userId}`, {
-					headers: {
-						Authorization: `Bearer ${accessToken}`,
-					},
-				});
-
-				setUserData(response.data);
+				const response = await dashboardApi();
+				setUserData(response);
 			} catch (error) {
 				if (error.response && error.response.status === 401) {
 					try {
@@ -62,7 +50,6 @@ const Page = () => {
 				}
 			}
 		}
-
 		fetchUserData();
 	}, []);
 	const clearLocal = () => {
@@ -75,32 +62,57 @@ const Page = () => {
 			{/* Display user-specific content */}
 
 			<div>
-				<div className='grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-3 gap-4'>
+				<div
+					className={`grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-3 gap-4${Banner_caps.className} `}
+				>
 					<div className=' portfolio'>
 						<h2 className='text-white text-center	font-bold text-lg pt-4'>
 							{userData.object_name}
 						</h2>
-						<div className='dashboard-menu'>
-							<ul className='text-slate-400 text-center  text-base pt-4'>
-								<li className='flex justify-center text-center'>
-									<Image className='w-4' src={location} alt='' />
-									<span className='pl-2'>{userData.address}</span>
-								</li>
-								<li>{userData.email}</li>
-								<li>{userData.mobile}</li>
-								<li>
-									{userData.time_from === undefined ||
-									userData.time_from === null
-										? ''
-										: `${userData.time_from.slice(
-												0,
-												5
-										  )} - ${userData.time_to.slice(0, 5)}`}
-								</li>
 
-								<li>რედაქტირება</li>
-								<li className={'cursor-pointer	'}>
-									<span onClick={clearLocal}>გამოსვლა</span>
+						<div className='detail clearfix pt-10 text-slate-400'>
+							<ul className='mb-0'>
+								<li>
+									<span>
+										<i className='fa fa-map-marker'></i> {userData.address}
+									</span>
+								</li>
+								<li>
+									<span className='active'>
+										<i className='fa fa-user'></i>
+										{userData.email}
+									</span>
+								</li>
+								<li>
+									<span>
+										<i className='fa fa-list' aria-hidden='true'></i>
+										{userData.mobile}
+									</span>
+								</li>
+								<li>
+									<span>
+										<i className='fa fa-heart' aria-hidden='true'></i>
+										{userData.time_from === undefined ||
+										userData.time_from === null
+											? ''
+											: `${userData.time_from.slice(
+													0,
+													5
+											  )} - ${userData.time_to.slice(0, 5)}`}
+									</span>
+								</li>
+								<li>
+									<Link href={`/editobject`}>
+										<span className='cursor-pointer'>
+											<i className='fa fa-list' aria-hidden='true'></i>
+											რედაქტირება
+										</span>
+									</Link>
+								</li>
+								<li>
+									<span className='cursor-pointer log-out' onClick={clearLocal}>
+										<i className='fas fa-sign-out-alt'></i>გამოსვლა
+									</span>
 								</li>
 							</ul>
 						</div>

@@ -1,7 +1,7 @@
 'use client';
 
 import axios from 'axios';
-import localFont from 'next/font/local';
+
 import Image from 'next/image';
 import { usePathname, useSearchParams } from 'next/navigation';
 import { useEffect, useState } from 'react';
@@ -14,12 +14,7 @@ import folder from '../icon/folder.svg';
 import user from '../icon/user.svg';
 import fb from '../icon/fb.svg';
 import inst from '../icon/inst.svg';
-
-const Banner_caps = localFont({
-	src: '../fonts/bpg_banner_caps.ttf',
-	display: 'swap',
-	variable: '--BPG-ExtraSquare-Mtavruli',
-});
+import { Banner_caps } from '../fonts/fonts';
 
 interface Item {
 	id?: number;
@@ -133,9 +128,7 @@ export default function Page({ params }: { params: { id: string } }) {
 										<li className='li-post'>
 											<Image className='w-4' src={user} alt='' />
 
-											<span className='pl-2 '>
-												{post.name} {post.last_name}
-											</span>
+											<span className='pl-2 '>{post.object_name}</span>
 										</li>
 
 										<li className='li-post'>
