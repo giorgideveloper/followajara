@@ -38,6 +38,7 @@ const Page = () => {
 			try {
 				const response = await dashboardApi();
 				setUserData(response);
+				
 			} catch (error) {
 				if (error.response && error.response.status === 401) {
 					try {
@@ -56,6 +57,8 @@ const Page = () => {
 		localStorage.clear();
 		router.replace('/');
 	};
+
+	
 
 	return (
 		<div>

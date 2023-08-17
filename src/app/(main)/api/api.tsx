@@ -51,6 +51,7 @@ export const postUserData = async (
 		const response = await axios.post<RegistrationResponse>(
 			`${baseURL}/user/registration/`,
 			userData,
+
 			{
 				headers: {
 					'Content-Type': 'multipart/form-data',
@@ -58,7 +59,17 @@ export const postUserData = async (
 			}
 		);
 
-		return response.data;
+		const accessToken = response.data.access_data.access;
+		const refreshToken = response.data.access_data.refresh;
+		const user_id = response.data.user.id;
+
+	
+		// Store tokens in local storage or cookies
+		localStorage.setItem('access_token', accessToken);
+		localStorage.setItem('refresh_token', refreshToken);
+		localStorage.setItem('userId', user_id);
+
+		return accessToken;
 	} catch (error) {
 		throw error;
 	}

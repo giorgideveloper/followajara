@@ -78,7 +78,7 @@ const ObjRegisterForm = () => {
 				setRegistrationStatus(response.message);
 
 				setTimeout(() => {
-					router.replace('/profile');
+					router.push('/dashboard');
 				}, 100);
 
 				console.log('Registration successful');

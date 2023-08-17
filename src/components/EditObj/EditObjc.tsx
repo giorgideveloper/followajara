@@ -1,15 +1,9 @@
 'use client';
-import { useForm } from 'react-hook-form';
+
 import { useRouter } from 'next/navigation';
-import moment from 'moment';
 import { useEffect, useState } from 'react';
-import { RegistrationType } from '@/app/(main)/api/api.types';
-import {
-	dashboardApi,
-	objectApi,
-	postEditUserData,
-	postUserData,
-} from '@/app/(main)/api/api';
+import { postEditUserData } from '@/app/(main)/api/api';
+import toast from '../helper/toast';
 
 const EditObjc = ({ data }) => {
 	const defaultValues: any = {
@@ -33,7 +27,6 @@ const EditObjc = ({ data }) => {
 	const [editData, setEditData] = useState<any>(data);
 	const router = useRouter();
 	const [editStatus, setEditStatus] = useState('');
-	const [type, setType] = useState('');
 
 	const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
 		const { name, value } = e.target;
@@ -70,16 +63,17 @@ const EditObjc = ({ data }) => {
 	useEffect(() => {
 		setEditData(data);
 	}, []);
+	console.log(data);
 
 	const handleSubmit = async e => {
 		e.preventDefault();
 		try {
 			const response = await postEditUserData(editData);
 			setEditStatus(response.message);
-
+			toast('success', 'წარმატებით შეიცვალა ინფორმაცია');
 			setTimeout(() => {
 				router.replace('/dashboard');
-			}, 100);
+			}, 1000);
 		} catch (error) {
 			console.error('Error editing user:', error);
 			setEditStatus('Error editing user');

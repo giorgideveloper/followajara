@@ -176,7 +176,7 @@ const Navbar = ({ metadata }: any) => {
 					<Link href='/login' className='font-fira-go text-gray-600'>
 						{userId ? (
 							<Link href='/dashboard' className='font-fira-go text-gray-600'>
-								გამარჯობა გიორგი
+								პროფილი
 							</Link>
 						) : (
 							'შესვლა'

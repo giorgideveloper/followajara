@@ -1,6 +1,7 @@
 import ObjLoginForm from '@/components/Auth/ObjLoginForm/ObjLoginForm';
 
 export default function page() {
+
 	return (
 		<>
 			<div className='w-full lg:w-3/4 mx-auto p-6'>
