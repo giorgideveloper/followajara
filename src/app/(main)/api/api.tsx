@@ -1,12 +1,19 @@
 // Add more functions for other API requests
 import axios from 'axios';
 import { RegistrationType, RegistrationResponse } from './api.types';
+import { refreshAccessToken } from '@/components/Auth/utils/api';
 
 const baseURL = 'https://follow.geoevents.ge/api';
 // Get all object
 export const objectApi = async () => {
 	try {
 		const response = await axios.get(`${baseURL}/object/`);
+		if (response.status === 400) {
+			refreshAccessToken();
+		}
+		if (response.status === 401) {
+			refreshAccessToken();
+		}
 		return response.data.results;
 	} catch (error) {
 		throw error;
@@ -63,7 +70,6 @@ export const postUserData = async (
 		const refreshToken = response.data.access_data.refresh;
 		const user_id = response.data.user.id;
 
-	
 		// Store tokens in local storage or cookies
 		localStorage.setItem('access_token', accessToken);
 		localStorage.setItem('refresh_token', refreshToken);

@@ -15,8 +15,6 @@ export const loginUser = async (email, password) => {
 		const refreshToken = response.data.refresh;
 		const user_id = response.data.user_id;
 
-		console.log('Access Token:', accessToken);
-		console.log('Refresh Token:', refreshToken);
 		// Store tokens in local storage or cookies
 		localStorage.setItem('access_token', accessToken);
 		localStorage.setItem('refresh_token', refreshToken);

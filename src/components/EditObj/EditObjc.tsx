@@ -51,8 +51,30 @@ const EditObjc = ({ data }) => {
 		setEditData(prevData => ({
 			...prevData,
 			image1: imageFile,
+			image2: imageFile,
+			image3: imageFile,
 		}));
 	};
+
+	if (editData.image1 && typeof editData.image1 === 'string') {
+		fetch(editData.image1)
+			.then(response => response.blob())
+			.then(blob => {
+				// Create a new File object
+				const file = new File([blob], 'image.jpg', { type: 'image/jpeg' });
+				console.log('File object:', file);
+				setEditData(prevData => ({
+					...prevData,
+					image1: file,
+					image2: file,
+					image3: file,
+				}));
+				// You can now use this 'file' object as needed, such as for uploading
+			})
+			.catch(error => {
+				console.error('Error fetching image:', error);
+			});
+	}
 	const handleTimeInputChange = (name, value) => {
 		setEditData(prevData => ({
 			...prevData,
@@ -63,7 +85,7 @@ const EditObjc = ({ data }) => {
 	useEffect(() => {
 		setEditData(data);
 	}, []);
-	console.log(data);
+	console.log(editData);
 
 	const handleSubmit = async e => {
 		e.preventDefault();
@@ -79,23 +101,6 @@ const EditObjc = ({ data }) => {
 			setEditStatus('Error editing user');
 		}
 	};
-	// useEffect(() => {
-	// 	switch (editData.object_type) {
-	// 		case 1:
-	// 			setType('ატრაქცია');
-	// 			break;
-	// 		case 2:
-	// 			setType('განთავსება');
-
-	// 			break;
-	// 		case 3:
-	// 			setType('კვება');
-
-	// 			break;
-	// 		default:
-	// 			setType('');
-	// 	}
-	// }, [editData.object_type]);
 
 	return (
 		<>
@@ -131,6 +136,7 @@ const EditObjc = ({ data }) => {
 								type='text'
 								id='name'
 								name='name'
+								placeholder='მაგ: გიორგი'
 								className='w-full input input-bordered mt-2 text-md text-gray-500'
 								value={editData.name}
 								onChange={handleInputChange}
@@ -149,6 +155,7 @@ const EditObjc = ({ data }) => {
 								onChange={handleInputChange}
 								type='text'
 								id='last_name'
+								placeholder='მაგ: ბერიძე'
 								className='w-full input input-bordered mt-2 text-md text-gray-500'
 								// {...register('last_name')}
 							/>
@@ -168,6 +175,7 @@ const EditObjc = ({ data }) => {
 								onChange={handleInputChange}
 								type='tel'
 								id='mobile'
+								placeholder='მაგ: 555112233'
 								className='w-full input input-bordered mt-2 text-md text-gray-500'
 								// {...register('mobile')}
 							/>
@@ -184,6 +192,7 @@ const EditObjc = ({ data }) => {
 								value={editData.email}
 								onChange={handleInputChange}
 								type='text'
+								placeholder='მაგ: giorgiberidze@mail.com'
 								id='email'
 								className='w-full input input-bordered mt-2 text-md text-gray-500'
 								// {...register('email')}
@@ -221,6 +230,7 @@ const EditObjc = ({ data }) => {
 								type='text'
 								id='object_name'
 								name='object_name'
+								placeholder='მაგ: ობიექტი'
 								className='w-full input input-bordered mt-2 text-md text-gray-500'
 								// {...register('object_name')}
 							/>
@@ -268,6 +278,7 @@ const EditObjc = ({ data }) => {
 								onChange={handleInputChange}
 								type='text'
 								id='address'
+								placeholder='მაგ: ფარნავაზ მეფის 100'
 								className='w-full input input-bordered mt-2 text-md text-gray-500'
 								// {...register('address')}
 							/>
@@ -285,6 +296,7 @@ const EditObjc = ({ data }) => {
 								type='number'
 								id='discount'
 								name='discount'
+								placeholder='მაგ: 1 - 100-მდე'
 								className='w-full input input-bordered mt-2 text-md text-gray-500'
 								// {...register('numberDiscount')}
 							/>
@@ -321,6 +333,7 @@ const EditObjc = ({ data }) => {
 								onChange={e => handleTimeInputChange('time_to', e.target.value)}
 								type='time'
 								id='time_to_type'
+								placeholder='მოკლე'
 								className='w-full input input-bordered mt-2 text-md text-gray-500'
 								// {...register('time_to_type')}
 							/>
@@ -400,15 +413,43 @@ const EditObjc = ({ data }) => {
 					</div>
 
 					<label htmlFor='file' className={'text-lg font-medium text-gray-900'}>
-						ფოტო
+						ფოტო 1
 					</label>
 					<input
 						onChange={handleImageInputChange}
 						type='file'
 						id='image1'
 						accept='image/*'
+						name='image1'
 						// onChange={handleImageChange}
-						className='w-full input input-bordered mt-2 text-md text-gray-500'
+
+						className='file-input file-input-bordered w-full'
+					/>
+					<label htmlFor='file' className={'text-lg font-medium text-gray-900'}>
+						ფოტო 2
+					</label>
+					<input
+						onChange={handleImageInputChange}
+						type='file'
+						id='image2'
+						accept='image/*'
+						name='image2'
+						// onChange={handleImageChange}
+
+						className='file-input file-input-bordered w-full'
+					/>
+					<label htmlFor='file' className={'text-lg font-medium text-gray-900'}>
+						ფოტო 3
+					</label>
+					<input
+						onChange={handleImageInputChange}
+						type='file'
+						id='image2'
+						accept='image/*'
+						name='image3'
+						// onChange={handleImageChange}
+
+						className='file-input file-input-bordered w-full'
 					/>
 
 					<label

@@ -158,7 +158,7 @@ export default function Page({ params }: { params: { id: string } }) {
 
 											<span className='pl-2 '>{categoryType}</span>
 										</li>
-										<li className='li-post '>
+										<li className='li-post cursor-pointer'>
 											<a className='pr-4' href={`${post.facebook}`}>
 												{' '}
 												<Image className='w-4' src={fb} alt='' />

@@ -7,6 +7,7 @@ import { useState, FC } from 'react';
 import { useRouter } from 'next/navigation';
 import axios from 'axios';
 import { loginUser } from '../utils/api';
+import toast from '@/components/helper/toast';
 
 interface IFormInput {
 	email: string;
@@ -31,25 +32,15 @@ const ObjLoginForm: FC<LoginFormProps> = () => {
 			setError('');
 			setLoading(true);
 			await loginUser(email, password);
-
+			toast('success', 'შესვლა წარმატებულია');
 			router.push('/dashboard');
 
 			if (error) {
 				setError(error);
 			}
-
-			// if (accessToken) {
-			// 	console.log(
-			// 		'🚀 ~ file: ObjLoginForm.tsx:44 ~ data:',
-			// 		accessToken.user_id
-			// 	);
-			// 	router.push(`/dashboard?user_id=${accessToken.user_id}`);
-
-			// 	setTimeout(() => {
-			// 		router.replace('/dashboard');
-			// 	}, 100);
-			// }
 		} catch (error) {
+			toast('error', 'შესვლა ვერ მოხვდა');
+
 			console.log(error);
 		} finally {
 			setLoading(false);

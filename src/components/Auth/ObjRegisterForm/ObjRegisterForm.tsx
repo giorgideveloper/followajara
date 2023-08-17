@@ -6,6 +6,7 @@ import { useRouter } from 'next/navigation';
 import { useState } from 'react';
 import { RegistrationType } from '@/app/(main)/api/api.types';
 import { postUserData } from '@/app/(main)/api/api';
+import toast from '@/components/helper/toast';
 
 const ObjRegisterForm = () => {
 	const router = useRouter();
@@ -16,11 +17,14 @@ const ObjRegisterForm = () => {
 	const [registrationStatus, setRegistrationStatus] = useState('');
 	// Image FC
 	const handleImageChange = (event: any) => {
-		setImage(event.target.files[0]);
-		console.log(
-			'🚀 ~ file: ObjRegisterForm.tsx:35 ~ handleImageChange ~ imageFile:',
-			event.target.files[0]
-		);
+		const imageFile = event.target.files[0];
+		// setImage(event.target.files[0]);
+		setImage(prevData => ({
+			...prevData,
+			image1: imageFile,
+			image2: imageFile,
+			image3: imageFile,
+		}));
 	};
 
 	const onSubmit = async (data: RegistrationType) => {
@@ -50,18 +54,20 @@ const ObjRegisterForm = () => {
 		if (image) {
 			const formData: any = new FormData();
 
-			formData.append('image', image);
+			formData.append('image1', image.image1);
+			formData.append('image2', image.image2);
+			formData.append('image3', image.image3);
 
 			// Append other fields to the formData
 			formData.append('object_name', object_name);
-			formData.append('object_type', object_type.toString());
+			formData.append('object_type', object_type);
 			formData.append('name', name);
 			formData.append('facebook', facebook);
 			formData.append('instagram', instagram);
 
 			formData.append('last_name', last_name);
 			formData.append('address', address);
-			formData.append('id_number', id_number);
+			formData.append('id_number', Math.floor(Math.random() * 110111112110));
 			formData.append('mobile', mobile);
 			formData.append('time_from', time_from);
 			formData.append('time_to', time_to);
@@ -76,6 +82,7 @@ const ObjRegisterForm = () => {
 			try {
 				const response = await postUserData(formData);
 				setRegistrationStatus(response.message);
+				toast('success', 'დარეგისტრირებულია წარმატებით');
 
 				setTimeout(() => {
 					router.push('/dashboard');
@@ -83,6 +90,7 @@ const ObjRegisterForm = () => {
 
 				console.log('Registration successful');
 			} catch (error) {
+				toast('error', `${error}`);
 				console.error('Error registering user:', error);
 				setRegistrationStatus('Error during registration');
 			}
@@ -126,6 +134,7 @@ const ObjRegisterForm = () => {
 						<input
 							type='text'
 							id='name'
+							placeholder='მაგ: გიორგი'
 							className='w-full input input-bordered mt-2 text-md text-gray-500'
 							{...register('name')}
 						/>
@@ -140,6 +149,7 @@ const ObjRegisterForm = () => {
 						<input
 							type='text'
 							id='last_name'
+							placeholder='მაგ: ბერიძე'
 							className='w-full input input-bordered mt-2 text-md text-gray-500'
 							{...register('last_name')}
 						/>
@@ -157,6 +167,7 @@ const ObjRegisterForm = () => {
 							type='tel'
 							id='mobile'
 							className='w-full input input-bordered mt-2 text-md text-gray-500'
+							placeholder='მაგ: 555112233'
 							{...register('mobile')}
 						/>
 					</div>
@@ -171,6 +182,7 @@ const ObjRegisterForm = () => {
 							type='text'
 							id='email'
 							className='w-full input input-bordered mt-2 text-md text-gray-500'
+							placeholder='მაგ: giorgiberidze@mail.com'
 							{...register('email')}
 						/>
 					</div>
@@ -204,12 +216,39 @@ const ObjRegisterForm = () => {
 							type='text'
 							id='object_name'
 							className='w-full input input-bordered mt-2 text-md text-gray-500'
+							placeholder='მაგ: ობიექტი'
 							{...register('object_name')}
 						/>
 					</div>
 
 					<div className='w-full'>
-						<label
+						<div className='w-full'>
+							<label
+								htmlFor='object_type'
+								className={'text-lg font-medium text-gray-900'}
+							>
+								ობიექტის ტაიპი
+							</label>
+							<select
+								id='object_type_value'
+								className='w-full input input-bordered mt-2 text-md text-gray-500'
+								{...register('object_type_value', { min: 1, max: 3 })}
+							>
+								<option value='1'>ატრაქცია</option>
+								<option value='2'>განთავსება</option>
+								<option value='3'>კვება</option>
+							</select>
+							{/* <input
+								name='object_type'
+								value={type}
+								onChange={handleInputChange}
+								type='text'
+								id='object_type'
+								className='w-full input input-bordered mt-2 text-md text-gray-500'
+								// {...register('object_type_value', { min: 1, max: 3 })}
+							/> */}
+						</div>
+						{/* <label
 							htmlFor='object_type_value'
 							className={'text-lg font-medium text-gray-900'}
 						>
@@ -220,7 +259,7 @@ const ObjRegisterForm = () => {
 							id='object_type_value'
 							className='w-full input input-bordered mt-2 text-md text-gray-500'
 							{...register('object_type_value', { min: 1, max: 3 })}
-						/>
+						/> */}
 					</div>
 				</div>
 				<div className='flex flex-col md:flex-row gap-4'>
@@ -235,6 +274,7 @@ const ObjRegisterForm = () => {
 							type='text'
 							id='address'
 							className='w-full input input-bordered mt-2 text-md text-gray-500'
+							placeholder='მაგ: ფარნავაზ მეფის 100'
 							{...register('address')}
 						/>
 					</div>
@@ -249,6 +289,7 @@ const ObjRegisterForm = () => {
 							type='number'
 							id='numberDiscount'
 							className='w-full input input-bordered mt-2 text-md text-gray-500'
+							placeholder='მაგ: 1-დან 100-მდე'
 							{...register('numberDiscount')}
 						/>
 					</div>
@@ -293,6 +334,7 @@ const ObjRegisterForm = () => {
 					<input
 						type='text'
 						id='description'
+						placeholder='მოკლე აღწერა'
 						className='w-full input input-bordered mt-2 h-28 text-md text-gray-500'
 						{...register('description')}
 					/>
@@ -356,6 +398,7 @@ const ObjRegisterForm = () => {
 							type='text'
 							id='facebook'
 							className='w-full input input-bordered mt-2 text-md text-gray-500'
+							placeholder='https://www.facebook.com/******/user'
 							{...register('facebook')}
 						/>
 					</div>
@@ -371,6 +414,7 @@ const ObjRegisterForm = () => {
 							type='text'
 							id='instagram'
 							className='w-full input input-bordered mt-2 text-md text-gray-500'
+							placeholder='https://www.instagram.com/******/user'
 							{...register('instagram')}
 						/>
 					</div>
@@ -381,17 +425,37 @@ const ObjRegisterForm = () => {
 				</label>
 				<input
 					type='file'
-					id='image1'
+					id='image2'
 					accept='image/*'
 					onChange={handleImageChange}
-					className='w-full input input-bordered mt-2 text-md text-gray-500'
+					className='file-input file-input-bordered w-full'
+				/>
+				<label htmlFor='file' className={'text-lg font-medium text-gray-900'}>
+					ფოტო2
+				</label>
+				<input
+					type='file'
+					id='image2'
+					accept='image/*'
+					onChange={handleImageChange}
+					className='file-input file-input-bordered w-full'
+				/>
+				<label htmlFor='file' className={'text-lg font-medium text-gray-900'}>
+					ფოტო3
+				</label>
+				<input
+					type='file'
+					id='image3'
+					accept='image/*'
+					onChange={handleImageChange}
+					className='file-input file-input-bordered w-full'
 				/>
 
 				<label
 					htmlFor='id_number'
 					className={'text-lg font-medium text-gray-900'}
 				>
-					id_number
+					პირადი ნომერი
 				</label>
 				<input
 					type='text'
