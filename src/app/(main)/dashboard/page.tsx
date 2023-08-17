@@ -65,7 +65,16 @@ const Page = () => {
 				<div
 					className={`grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-3 gap-4${Banner_caps.className} `}
 				>
-					<div className=' portfolio'>
+					<div className=' portfolio '>
+						<div className='avatar pt-5 align-middle flex justify-center'>
+							<div className='relative flex text-center items-center justify-center w-20 h-20 overflow-hidden text-3xl bg-gray-100 rounded-full dark:bg-gray-600'>
+								<span className='font-medium text-gray-600 dark:text-gray-300'>
+									{'J'}
+									{'R'}
+								</span>
+							</div>
+						</div>
+
 						<h2 className='text-white text-center	font-bold text-lg pt-4'>
 							{userData.object_name}
 						</h2>

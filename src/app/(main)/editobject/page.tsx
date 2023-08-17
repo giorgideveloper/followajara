@@ -26,7 +26,7 @@ export default function page() {
 				<div className='card w-full lg:w-2/3 bg-base-100 shadow-xl mx-auto mt-6'>
 					<div className='card-body'>
 						{/* <p className="text-2xl font-bold text-center my-10 text-red-600">რეგისტრაცია დაიწყება 1 აგვისტოს!</p> */}
-						<EditObjc data={data} />
+						{data.id ? <EditObjc data={data} /> : 'Loading'}
 					</div>
 				</div>
 			</div>
