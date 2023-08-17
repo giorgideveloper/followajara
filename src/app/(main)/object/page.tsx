@@ -98,7 +98,7 @@ const Page: React.FC = () => {
 			<div className='container mx-auto my-4 px-7 '>
 				{info.map((item, index) => (
 					<>
-						<div className='info text-center pb-3 '>
+						<div key={item.id} className='info text-center pb-3 '>
 							<h2
 								className={` ${Banner_caps.className} m-4 pb-3`}
 								key={item.id}
@@ -135,7 +135,7 @@ const Page: React.FC = () => {
 					{lodaing
 						? data.map(item => (
 								// eslint-disable-next-line react/jsx-key
-								<Link href={`/object/${item.id}`}>
+								<Link key={item.id} href={`/object/${item.id}`}>
 									<div
 										className='card card-compact  cursor-pointer '
 										key={item.id}
@@ -146,7 +146,7 @@ const Page: React.FC = () => {
 													<div className='top-left absolute  '>
 														<div className='top-left-bg'>
 															<span>
-																{(item.discount === 100 && (
+																{(item.discount >= 100 && (
 																	<span>Free</span>
 																)) || <span>{item.discount} %</span>}
 															</span>
@@ -178,7 +178,7 @@ const Page: React.FC = () => {
 												</div>
 
 												<div className='card-info'>
-													<ul className='ul'>
+													<ul className='ul w-full'>
 														<li className='li'>
 															<Image className='w-4' src={location} alt='' />
 

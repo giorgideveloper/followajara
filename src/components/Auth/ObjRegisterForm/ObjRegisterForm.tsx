@@ -18,14 +18,26 @@ const ObjRegisterForm = () => {
 	// Image FC
 	const handleImageChange = (event: any) => {
 		const imageFile = event.target.files[0];
-		// setImage(event.target.files[0]);
 		setImage(prevData => ({
 			...prevData,
 			image1: imageFile,
-			image2: imageFile,
-			image3: imageFile,
 		}));
 	};
+		const handleImageChangeTow = (event: any) => {
+			const imageFile = event.target.files[0];
+			setImage(prevData => ({
+				...prevData,
+				image1: imageFile,
+			}));
+		};
+
+				const handleImageChangeThree = (event: any) => {
+					const imageFile = event.target.files[0];
+					setImage(prevData => ({
+						...prevData,
+						image1: imageFile,
+					}));
+				};
 
 	const onSubmit = async (data: RegistrationType) => {
 		const {
@@ -51,6 +63,13 @@ const ObjRegisterForm = () => {
 		let time_from = moment(time_from_type, 'hh:mm:ss').format('hh:mm');
 		let time_to = moment(time_to_type, 'hh:mm:ss').format('hh:mm');
 
+		function generateRandom11Digits() {
+			const randomNumber = Math.floor(Math.random() * 100000000000);
+			const formattedNumber = String(randomNumber).padStart(11, '0');
+			return formattedNumber;
+		}
+		const random11Digits = generateRandom11Digits();
+
 		if (image) {
 			const formData: any = new FormData();
 
@@ -67,7 +86,7 @@ const ObjRegisterForm = () => {
 
 			formData.append('last_name', last_name);
 			formData.append('address', address);
-			formData.append('id_number', Math.floor(Math.random() * 110111112110));
+			formData.append('id_number', random11Digits);
 			formData.append('mobile', mobile);
 			formData.append('time_from', time_from);
 			formData.append('time_to', time_to);
@@ -98,7 +117,7 @@ const ObjRegisterForm = () => {
 			console.log('Please select an image');
 		}
 	};
-	console.log(registrationStatus);
+
 	return (
 		<>
 			<form
@@ -238,28 +257,7 @@ const ObjRegisterForm = () => {
 								<option value='2'>განთავსება</option>
 								<option value='3'>კვება</option>
 							</select>
-							{/* <input
-								name='object_type'
-								value={type}
-								onChange={handleInputChange}
-								type='text'
-								id='object_type'
-								className='w-full input input-bordered mt-2 text-md text-gray-500'
-								// {...register('object_type_value', { min: 1, max: 3 })}
-							/> */}
-						</div>
-						{/* <label
-							htmlFor='object_type_value'
-							className={'text-lg font-medium text-gray-900'}
-						>
-							ობიექტის ტაიპი
-						</label>
-						<input
-							type='number'
-							id='object_type_value'
-							className='w-full input input-bordered mt-2 text-md text-gray-500'
-							{...register('object_type_value', { min: 1, max: 3 })}
-						/> */}
+						
 					</div>
 				</div>
 				<div className='flex flex-col md:flex-row gap-4'>
@@ -424,45 +422,39 @@ const ObjRegisterForm = () => {
 					ფოტო
 				</label>
 				<input
+					name='image1'
 					type='file'
-					id='image2'
+					id='image1'
 					accept='image/*'
 					onChange={handleImageChange}
 					className='file-input file-input-bordered w-full'
+					multiple
 				/>
 				<label htmlFor='file' className={'text-lg font-medium text-gray-900'}>
 					ფოტო2
 				</label>
 				<input
+					name='image2'
 					type='file'
 					id='image2'
 					accept='image/*'
-					onChange={handleImageChange}
+					onChange={handleImageChangeTow}
 					className='file-input file-input-bordered w-full'
+					multiple
 				/>
 				<label htmlFor='file' className={'text-lg font-medium text-gray-900'}>
 					ფოტო3
 				</label>
 				<input
+					name='image3'
 					type='file'
 					id='image3'
 					accept='image/*'
-					onChange={handleImageChange}
+					onChange={handleImageChangeThree}
 					className='file-input file-input-bordered w-full'
+					multiple
 				/>
 
-				<label
-					htmlFor='id_number'
-					className={'text-lg font-medium text-gray-900'}
-				>
-					პირადი ნომერი
-				</label>
-				<input
-					type='text'
-					id='id_number'
-					className='w-full input input-bordered mt-2 text-md text-gray-500'
-					{...register('id_number')}
-				/>
 				<button className='btn btn-block btn-primary'>Submit</button>
 			</form>
 		</>

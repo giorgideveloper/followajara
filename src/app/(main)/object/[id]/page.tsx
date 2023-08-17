@@ -1,13 +1,9 @@
 'use client';
-
 import axios from 'axios';
-
 import Image from 'next/image';
-import { usePathname, useSearchParams } from 'next/navigation';
 import { useEffect, useState } from 'react';
 import location from '../icon/location.svg';
 import clock from '../icon/clock.svg';
-import anbani from '../img/anbani.png';
 import phone from '../icon/phone.svg';
 import email from '../icon/email.svg';
 import folder from '../icon/folder.svg';
@@ -15,6 +11,13 @@ import user from '../icon/user.svg';
 import fb from '../icon/fb.svg';
 import inst from '../icon/inst.svg';
 import { Banner_caps } from '../fonts/fonts';
+//Swiper Js
+import Swiper from 'swiper';
+import { Navigation, Pagination } from 'swiper/modules';
+// import Swiper and modules styles
+import 'swiper/css';
+import 'swiper/css/navigation';
+import 'swiper/css/pagination';
 
 interface Item {
 	id?: number;
@@ -41,6 +44,7 @@ const API_URL = 'https://follow.geoevents.ge/api';
 export default function Page({ params }: { params: { id: string } }) {
 	const [post, setPost] = useState<Item[]>([]);
 	const [categoryType, setCategoryType] = useState('');
+
 	useEffect(() => {
 		const fetchPost = async () => {
 			try {
@@ -55,6 +59,16 @@ export default function Page({ params }: { params: { id: string } }) {
 		}
 	}, [params.id]);
 
+	//Swiper Js
+	const swiper = new Swiper('.swiper', {
+		navigation: {
+			nextEl: '.swiper-button-next',
+			prevEl: '.swiper-button-prev',
+		},
+		modules: [Navigation, Pagination],
+
+		// configure Swiper to use modules
+	});
 	const typeSettings = () => {
 		switch (post.object_type) {
 			case 1:
@@ -77,7 +91,7 @@ export default function Page({ params }: { params: { id: string } }) {
 	return (
 		<>
 			<div className='container mx-auto my-4 px-7'>
-				<div className=' grid grid-cols-1 sm:grid-cols-2 md:grid-cols-2 lg:grid-cols-4 gap-2'>
+				<div className='  grid grid-cols-1 sm:grid-cols-1 md:grid-cols-1 lg:grid-cols-4 gap-2'>
 					{post && (
 						<>
 							<div className='card card-compact col-span-3'>
@@ -87,31 +101,77 @@ export default function Page({ params }: { params: { id: string } }) {
 											<div className='top-left-main absolute  '>
 												<div className='top-left-bg'>
 													<span>
-														{(post.discount === 100 && <span>Free</span>) || (
+														{(post.discount >= 100 && <span>Free</span>) || (
 															<span>{post.discount} %</span>
 														)}
 													</span>
 												</div>
 											</div>
+											<div className='w-full'>
+												<div
+													className='swiper'
+													pagination={true}
+													modules={[Navigation]}
+												>
+													<div className='swiper-wrapper'>
+														<div className='swiper-slide'>
+															<Image
+																className='w-full'
+																src={
+																	post.image1 === undefined ||
+																	post.image1 === null
+																		? 'https://follow.geoevents.ge/media/media/obieqtebi/318123540_140831465410945_5078453068844189760_n.jpg'
+																		: `${post.image1}`
+																}
+																alt={`Image`}
+																width={400}
+																height={500}
+															/>
+														</div>
+														<div className='swiper-slide'>
+															<Image
+																className='w-full'
+																src={
+																	post.image2 === undefined ||
+																	post.image2 === null
+																		? 'https://follow.geoevents.ge/media/media/obieqtebi/318123540_140831465410945_5078453068844189760_n.jpg'
+																		: `${post.image2}`
+																}
+																alt={`Image`}
+																width={400}
+																height={500}
+															/>
+														</div>
+														<div className='swiper-slide'>
+															<Image
+																className='w-full'
+																src={
+																	post.image3 === undefined ||
+																	post.image3 === null
+																		? 'https://follow.geoevents.ge/media/media/obieqtebi/318123540_140831465410945_5078453068844189760_n.jpg'
+																		: `${post.image3}`
+																}
+																alt={`Image`}
+																width={400}
+																height={500}
+															/>
+														</div>
+														...
+													</div>
 
-											<Image
-												className='w-full'
-												src={
-													post.image1 === undefined || post.image1 === null
-														? 'https://follow.geoevents.ge/media/media/obieqtebi/318123540_140831465410945_5078453068844189760_n.jpg'
-														: `${post.image1}`
-												}
-												alt='anbani'
-												width={500}
-												height={500}
-											/>
+													<div className='swiper-pagination'></div>
+
+													<div className='swiper-button-prev'></div>
+													<div className='swiper-button-next'></div>
+
+													<div className='swiper-scrollbar'></div>
+												</div>
+											</div>
 										</div>
 									</div>
 									<div className='card-content '>
 										<div className='card-title '>
-											<h1 className={`text-3xl Banner_caps pt-3 pl-2 `}>
-												{post.object_name}
-											</h1>
+											<h1 className={`text-3xl Banner_caps pt-3 pl-2 `}></h1>
 										</div>
 
 										<div className='card-description'>
@@ -123,8 +183,8 @@ export default function Page({ params }: { params: { id: string } }) {
 								</div>
 							</div>
 							<div className='my-4'>
-								<div className='card-info '>
-									<ul className='ul-post'>
+								<div className='card-info w-full'>
+									<ul className='ul-post w-full'>
 										<li className='li-post'>
 											<Image className='w-4' src={user} alt='' />
 
@@ -140,7 +200,10 @@ export default function Page({ params }: { params: { id: string } }) {
 											<Image className='w-5 ' src={clock} alt='' />
 
 											<span className='pl-2'>
-												{post.time_from}-{post.time_to}
+												{`${post.time_from?.slice(0, 5)}-${post.time_to?.slice(
+													0,
+													5
+												)}`}
 											</span>
 										</li>
 										<li className='li-post'>
@@ -167,8 +230,6 @@ export default function Page({ params }: { params: { id: string } }) {
 												{' '}
 												<Image className='w-4' src={inst} alt='' />
 											</a>
-
-											<span className='pl-2 '>{post.facebook}</span>
 										</li>
 									</ul>
 								</div>

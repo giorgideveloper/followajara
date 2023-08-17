@@ -27,6 +27,8 @@ const EditObjc = ({ data }) => {
 	const [editData, setEditData] = useState<any>(data);
 	const router = useRouter();
 	const [editStatus, setEditStatus] = useState('');
+	const [uploading, setUploading] = useState(false);
+	console.log('🚀 ~ file: EditObjc.tsx:31 ~ EditObjc ~ editStatus:', uploading);
 
 	const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
 		const { name, value } = e.target;
@@ -69,7 +71,7 @@ const EditObjc = ({ data }) => {
 					image2: file,
 					image3: file,
 				}));
-				// You can now use this 'file' object as needed, such as for uploading
+				setUploading(false);
 			})
 			.catch(error => {
 				console.error('Error fetching image:', error);

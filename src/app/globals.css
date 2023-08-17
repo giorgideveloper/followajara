@@ -323,8 +323,12 @@ body {
 	font-style: normal;
 	font-weight: 400;
 	line-height: 130.187%;
-	color: rgba(51, 51, 51, 0.44);
+	color: #0039;
 	border-bottom: 1px solid rgba(51, 51, 51, 0.3);
+}
+
+.card-title {
+	color: #0039;
 }
 .li-post img {
 	width: 25px;
@@ -337,13 +341,29 @@ body {
 	background-color: #1d293e;
 }
 
+@media only screen and (max-width: 601px) {
+	.portfolio {
+		width: 100%;
+		height: 70vh;
+		background-color: #1d293e;
+	}
+	.detail ul li span {
+		font-size: 16px !important;
+	}
+	.log-out {
+		top: 0;
+		margin-top: 40em;
+	}
+}
+
 .detail ul li span {
 	color: #aeb7c2;
 	padding: 12px 50px;
-	display: block;
+	display: flex;
 	text-decoration: none;
 	font-size: 16px;
 	font-weight: 500;
+	align-items: center;
 }
 
 .detail ul li :hover {
@@ -354,11 +374,29 @@ body {
 	transition: all 0.3s ease;
 }
 .log-out {
-	margin-top: 26em;
+	position: absolute;
+	left: 0;
+	bottom: 0;
+	text-align: center;
 }
 
 .avatar > div {
 	display: flex;
 	aspect-ratio: 1 / 1;
 	overflow: hidden;
+}
+
+.swiper-button-next:after,
+.swiper-rtl .swiper-button-prev:after {
+	color: #d98200;
+	font-weight: bold;
+}
+.swiper-button-prev:after,
+.swiper-rtl .swiper-button-next:after {
+	color: #d98200;
+	font-weight: bold;
+}
+.log-out-img {
+	width: 28px;
+	height: 20px;
 }

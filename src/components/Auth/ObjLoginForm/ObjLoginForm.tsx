@@ -39,7 +39,7 @@ const ObjLoginForm: FC<LoginFormProps> = () => {
 				setError(error);
 			}
 		} catch (error) {
-			toast('error', 'შესვლა ვერ მოხვდა');
+			toast('error', 'შესვლა განხორციელდა წარმატებით');
 
 			console.log(error);
 		} finally {
