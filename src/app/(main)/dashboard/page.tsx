@@ -32,13 +32,13 @@ const Page = () => {
 	}
 
 	const [userData, setUserData] = useState<Item[]>([]);
+	const [categoryType, setCategoryType] = useState('');
 
 	useEffect(() => {
 		async function fetchUserData() {
 			try {
 				const response = await dashboardApi();
 				setUserData(response);
-				
 			} catch (error) {
 				if (error.response && error.response.status === 401) {
 					try {
@@ -58,7 +58,24 @@ const Page = () => {
 		router.replace('/');
 	};
 
-	
+	const typeSettings = () => {
+		switch (userData.object_type) {
+			case 1:
+				setCategoryType('ატრაქცია');
+				break;
+			case 2:
+				setCategoryType('განთავსება');
+				break;
+			case 3:
+				setCategoryType('კვება');
+				break;
+			default:
+				setCategoryType('...');
+		}
+	};
+	useEffect(() => {
+		typeSettings();
+	});
 
 	return (
 		<div>
@@ -146,7 +163,7 @@ const Page = () => {
 												</span>
 											</div>
 										</div>
-										<div className='bottom-left absolute'>განთავსება</div>
+										<div className='bottom-left absolute'>{categoryType}</div>
 										<Image
 											className='w-full'
 											src={

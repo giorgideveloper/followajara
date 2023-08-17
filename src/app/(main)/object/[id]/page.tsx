@@ -57,13 +57,13 @@ export default function Page({ params }: { params: { id: string } }) {
 
 	const typeSettings = () => {
 		switch (post.object_type) {
-			case  1:
+			case 1:
 				setCategoryType('ატრაქცია');
 				break;
-			case  2:
+			case 2:
 				setCategoryType('განთავსება');
 				break;
-			case  3:
+			case 3:
 				setCategoryType('კვება');
 				break;
 			default:
@@ -73,7 +73,7 @@ export default function Page({ params }: { params: { id: string } }) {
 	useEffect(() => {
 		typeSettings();
 	});
-console.log(categoryType)
+
 	return (
 		<>
 			<div className='container mx-auto my-4 px-7'>
