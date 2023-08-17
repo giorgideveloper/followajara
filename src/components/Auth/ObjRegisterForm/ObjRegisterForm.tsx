@@ -1,5 +1,4 @@
 'use client';
-import axios from 'axios';
 import { useForm } from 'react-hook-form';
 import moment from 'moment';
 import { useRouter } from 'next/navigation';
@@ -62,7 +61,7 @@ const ObjRegisterForm = () => {
 		let discount: number = +numberDiscount;
 		let time_from = moment(time_from_type, 'hh:mm:ss').format('hh:mm');
 		let time_to = moment(time_to_type, 'hh:mm:ss').format('hh:mm');
-
+// Number generation
 		function generateRandom11Digits() {
 			const randomNumber = Math.floor(Math.random() * 100000000000);
 			const formattedNumber = String(randomNumber).padStart(11, '0');

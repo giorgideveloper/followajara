@@ -58,7 +58,7 @@ const Page = () => {
 		localStorage.clear();
 		router.replace('/');
 	};
-
+	// Type Setting
 	const typeSettings = () => {
 		switch (userData.object_type) {
 			case 1:
