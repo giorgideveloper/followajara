@@ -207,7 +207,16 @@ const Page = () => {
 												<li className='li'>
 													<Image className='w-5 ' src={clock} alt='' />
 
-													<span className='pl-2'>10:00-00:00</span>
+													<span className='pl-2'>
+														{' '}
+														{userData.time_from === undefined ||
+														userData.time_from === null
+															? ''
+															: `${userData.time_from.slice(
+																	0,
+																	5
+															  )} - ${userData.time_to.slice(0, 5)}`}
+													</span>
 												</li>
 											</ul>
 										</div>

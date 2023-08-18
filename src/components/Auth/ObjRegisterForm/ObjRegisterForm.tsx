@@ -22,21 +22,21 @@ const ObjRegisterForm = () => {
 			image1: imageFile,
 		}));
 	};
-		const handleImageChangeTow = (event: any) => {
-			const imageFile = event.target.files[0];
-			setImage(prevData => ({
-				...prevData,
-				image1: imageFile,
-			}));
-		};
+	const handleImageChangeTow = (event: any) => {
+		const imageFile = event.target.files[0];
+		setImage(prevData => ({
+			...prevData,
+			image1: imageFile,
+		}));
+	};
 
-				const handleImageChangeThree = (event: any) => {
-					const imageFile = event.target.files[0];
-					setImage(prevData => ({
-						...prevData,
-						image1: imageFile,
-					}));
-				};
+	const handleImageChangeThree = (event: any) => {
+		const imageFile = event.target.files[0];
+		setImage(prevData => ({
+			...prevData,
+			image1: imageFile,
+		}));
+	};
 
 	const onSubmit = async (data: RegistrationType) => {
 		const {
@@ -61,7 +61,7 @@ const ObjRegisterForm = () => {
 		let discount: number = +numberDiscount;
 		let time_from = moment(time_from_type, 'hh:mm:ss').format('hh:mm');
 		let time_to = moment(time_to_type, 'hh:mm:ss').format('hh:mm');
-// Number generation
+		// Number generation
 		function generateRandom11Digits() {
 			const randomNumber = Math.floor(Math.random() * 100000000000);
 			const formattedNumber = String(randomNumber).padStart(11, '0');
@@ -93,9 +93,6 @@ const ObjRegisterForm = () => {
 			formData.append('email', email);
 			formData.append('password', password);
 			formData.append('description', description);
-
-			try {
-			} catch (error) {}
 
 			try {
 				const response = await postUserData(formData);
@@ -256,7 +253,7 @@ const ObjRegisterForm = () => {
 								<option value='2'>განთავსება</option>
 								<option value='3'>კვება</option>
 							</select>
-						
+						</div>
 					</div>
 				</div>
 				<div className='flex flex-col md:flex-row gap-4'>
@@ -459,4 +456,5 @@ const ObjRegisterForm = () => {
 		</>
 	);
 };
+
 export default ObjRegisterForm;

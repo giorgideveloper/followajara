@@ -60,37 +60,6 @@ const Page: React.FC = () => {
 		fetchInfo();
 	}, []);
 
-	const typeSettings = () => {
-		// if (data.object_type !== null) {
-		// 	console.log(data.object_type);
-		// 	if (data.object_type === 1) {
-		// 		setData('ატრაქცია');
-		// 	}
-		// 	if (data.object_type === 2) {
-		// 		setData('განთავსება');
-		// 	}
-		// 	if (data.object_type === 3) {
-		// 		setData('კვება');
-		// 	}
-		// }
-		// switch (userData.object_type) {
-		// 	case 1:
-		// 		setCategoryType('ატრაქცია');
-		// 		break;
-		// 	case 2:
-		// 		setCategoryType('განთავსება');
-		// 		break;
-		// 	case 3:
-		// 		setCategoryType('კვება');
-		// 		break;
-		// 	default:
-		// 		setCategoryType('...');
-		// }
-	};
-	useEffect(() => {
-		typeSettings();
-	});
-
 	console.log(data);
 	const userId = localStorage.getItem('userId');
 	return (
@@ -161,7 +130,7 @@ const Page: React.FC = () => {
 														className='w-full'
 														src={
 															item.image1 === undefined || item.image1 === null
-																? 'https://follow.geoevents.ge/media/media/obieqtebi/318123540_140831465410945_5078453068844189760_n.jpg'
+																? ''
 																: `${item.image1}`
 														}
 														alt='anbani'
